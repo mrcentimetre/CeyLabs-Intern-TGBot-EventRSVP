@@ -2,6 +2,7 @@ require('dotenv').config();
 const { Telegraf, session, Scenes } = require('telegraf');
 const { message } = require("telegraf/filters");
 const { inlineKeyboard } = require('telegraf/markup');
+const fs = require('fs');
 
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
@@ -21,19 +22,31 @@ async function approveJoinRequest(ctx, userId) {
   const chatId = '-1002210661618';
   try {
     await bot.telegram.approveChatJoinRequest(chatId, userId);
-    setTimeout(() => {
-    ctx.reply(`Successfully approved ${ctx.from.first_name}'s join request.`)}
-    , 5000);
+      bot.telegram.sendSticker(ctx.chat.id, 'CAACAgEAAxkBAAIFg2Zov_yyPaE_qE-5b-LYL7jZa_dOAALKAQACCafZRl5-64cebkGpNQQ')
+      setTimeout(() => {
+      bot.telegram.sendMessage(ctx.chat.id,  `📄 <b>Registration Details</b>\n\n<b>• Full Name:</b> ${ctx.session.name}`+
+        `\n<b>• Email:</b> ${ctx.session.email}`+
+        `\n<b>• No of Tickets:</b> ${ctx.session.noOfTickets}`+ 
+        `\n\n<b>Thank you for confirming your participation!</b>`,
+        { reply_markup: { remove_keyboard: true }, 
+        parse_mode: "HTML" }
+      )
+      }, 1000);
   } catch (error) {
     console.error(`Failed to approve join request for user ${userId}:`, error);
+
     if (error.response.description === 'Bad Request: USER_ALREADY_PARTICIPANT') {
-      bot.telegram.sendAnimation(ctx.chat.id, "CgACAgQAAxkBAAIG8WZpOYWV58eH3qZ34rL8030tx_V3AAL7AgAC8PZMU27D__eT9_FyNQQ", {
-        caption: `We can't process your join request because you're already a member of the group.`,
-      });
+      bot.telegram.answerCbQuery(ctx.callbackQuery.id, `We can't process your join request because you're already a member of the group.`, 
+        {
+          show_alert: true
+        });
+
     } else if (error.description === 'Bad Request: HIDE_REQUESTER_MISSING') {
-      bot.telegram.sendAnimation(ctx.chat.id, "CgACAgQAAxkBAAIHK2ZpPPNpwGgkFoeL9_BWG5atKfhnAALtBAACoEbUU3_Mb78FI5yQNQQ", {
-        caption: `We can't process your join request because you didn't request to join.`,
-      });
+      bot.telegram.answerCbQuery(ctx.callbackQuery.id, `We can't process your join request because you didn't request to join.`, 
+        {
+          show_alert: true
+        });
+
     } else {
       ctx.reply(`Failed to approve join request. Please try again.`);
     }
@@ -267,7 +280,7 @@ Hello ${ctx.from.first_name}! Get ready to join our exclusive Tap Apps Workshops
     )})
     
   // Handle confirm registration
-  bot.action('confirm', (ctx) => {
+  bot.action('confirm', async (ctx) => {
     bot.telegram.sendChatAction(ctx.chat.id, "choose_sticker");
     setTimeout(() => {
       try {
@@ -294,6 +307,21 @@ Hello ${ctx.from.first_name}! Get ready to join our exclusive Tap Apps Workshops
         }, parse_mode: "HTML"}
     )
     }, 2000); // 5000 milliseconds = 5 seconds
+
+     // Read the existing data from the file
+     const data = fs.readFileSync('database.json', 'utf8');
+     const users = JSON.parse(data);
+     
+     // Add the new user
+     users.push({
+      id: ctx.from.id,
+      name: ctx.session.name,
+      email: ctx.session.email,
+      noOfTickets: ctx.session.noOfTickets
+      });
+      // Write the updated data back to the file
+      fs.writeFileSync('database.json', JSON.stringify(users, null, 2));
+
     });
     
   bot.action('cancel', (ctx) => {
@@ -302,31 +330,22 @@ Hello ${ctx.from.first_name}! Get ready to join our exclusive Tap Apps Workshops
   });
 
 bot.action('confirm_participation', async (ctx) => {
-  bot.telegram.sendSticker(ctx.chat.id, 'CAACAgEAAxkBAAIFg2Zov_yyPaE_qE-5b-LYL7jZa_dOAALKAQACCafZRl5-64cebkGpNQQ')
-  setTimeout(() => {
-  bot.telegram.sendMessage(ctx.chat.id,  `📄 <b>Registration Details</b>\n\n<b>• Full Name:</b> ${ctx.session.name}`+
-    `\n<b>• Email:</b> ${ctx.session.email}`+
-    `\n<b>• No of Tickets:</b> ${ctx.session.noOfTickets}`+ 
-    `\n\n<b>Thank you for confirming your participation!</b>`,
-    { reply_markup: { remove_keyboard: true }, 
-    parse_mode: "HTML" }
-  )
-  }, 1000);
-  setTimeout( async () => {
     bot.telegram.sendChatAction(ctx.chat.id, "typing");
-  await approveJoinRequest(ctx, ctx.from.id); // Approve the join request here
-  }, 5000);
+    await approveJoinRequest(ctx, ctx.from.id); // Approve the join request here
 }
 );
 
- 
-  // bot.on(message("animation"), async ctx => {
-  //   ctx.replyWithHTML("<b>Bold</b>, <a href='google.com'>italic</a>, and __underlines__\\!");
-  //   bot.telegram.sendPoll(ctx.message.chat.id, "Do you like this bot?", ["Yes", "No"], { is_anonymous: false });
-  //   bot.telegram.sendQuiz(ctx.message.chat.id, "Do you like this bot?", ["Yes", "No"], { correct_option_id: 0 });
-  //   bot.telegram.sendPhoto(ctx.message.chat.id, "AgACAgUAAxkBAAIBJ2ZnUfhJlCFoaSyoY5-9RFgMvzENAALfuzEbAqQ4V1nP-CGKdsv3AQADAgADcwADNQQ", { caption: "Random photo" });
-  //   console.log(ctx.message);
-  // });
+// Easter Eggs
+bot.on('new_chat_members', (ctx) => {
+  const newUser = ctx.message.new_chat_members[0];
+  ctx.telegram.sendMessage(ctx.message.chat.id, `Welcome, ${newUser.first_name}! 🎉 Thank you for joining our cattery group!\n\nImagine you joined with the Tap-Apps Workshop Group. But actually, I like cats . 😌`);
+  
+  setTimeout(() => {
+    bot.telegram.sendMessage(ctx.message.chat.id, `🤔`)
+    if (newUser.username == 'CMNisal') {
+      ctx.reply("Ah you are the boss, I do my best cer. 🫡")
+}}, 3000)
+})
 
   bot.launch();
 

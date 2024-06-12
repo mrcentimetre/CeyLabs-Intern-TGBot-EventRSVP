@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "name": "John Doe",
+    "email": "john.doe@example.com",
+    "noOfTickets": 2
+  },
+  {
+    "id": 2,
+    "name": "Jane Doe",
+    "email": "jane.doe@example.com",
+    "noOfTickets": 3
+  },
+  {
+    "id": 591992584,
+    "name": "Centi",
+    "email": "Cenri@gmail.com",
+    "noOfTickets": "2"
+  }
+]
