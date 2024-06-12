@@ -10,6 +10,9 @@ yarn-error.log
 dist/
 build/
 
+# Config Files
+scr/config.js
+
 # Environment variables
 .env
 
