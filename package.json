@@ -1,0 +1,16 @@
+{
+  "name": "taps-app-telegram-bot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "keywords": [],
+  "author": "",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "nodemon": "^1.19.4",
+    "telegraf": "^4.16.3"
+  },
+  "scripts": {
+    "test": "nodemon index.js"
+  }
+}
