@@ -76,9 +76,11 @@ module.exports = {
     GROUP_ID: 'Your Group ID Here'    // Group ID of the event group. You can get it using the /grpid command after adding the bot to the group.
 };
 
+// Please rename this file to config.js after you have filled in the values.
+```
 After renaming, your `config.js` file should not be tracked by git, so it will not be pushed to the repository with your sensitive data.
 
-// Please rename this file to config.js after you have filled in the values.
+
 
 ## Database
 User registration details are stored in the ```src/database.json``` file. The information stored includes the user's name, email, and the number of tickets they registered for.
