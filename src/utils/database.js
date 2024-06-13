@@ -12,6 +12,17 @@ const writeToDatabase = (userData) => {
   fs.writeFileSync('./src/database.json', JSON.stringify(users, null, 2));
 };
 
+const readFromDatabase = (ctx) => {
+   // Check if user already exists in the database
+   const data = fs.readFileSync('./src/database.json', 'utf8');
+   const users = JSON.parse(data);
+   
+   const existingUser = users.find(user => user.id === ctx.from.id);
+   
+   return existingUser;
+}
+
 module.exports = {
-  writeToDatabase
+  writeToDatabase,
+  readFromDatabase
 };

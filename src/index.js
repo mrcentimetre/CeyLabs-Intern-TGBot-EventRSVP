@@ -2,7 +2,7 @@ const { Telegraf, session, Scenes } = require('telegraf');
 const { getName, getEmail, getTickets } = require('./utils/registration.js');
 const { BOT_TOKEN } = require('./config.js');
 const { approveJoinRequest } = require('./utils/group_invitation.js');
-const { writeToDatabase } = require('./utils/database.js');
+const { writeToDatabase, readFromDatabase } = require('./utils/database.js');
 const { helpMessage, welcomePhoto, rsvpMsg, welcomeMsg, YouMustBecomeGif, groupLinkMsg } = require('./utils/event_info.js');
 
 // Create a bot instance
@@ -27,14 +27,6 @@ const privateChatCommand = async (ctx, next) => {
 const privateChatText = async (ctx, next) => {
   if (ctx.chat.type === 'private') {
     return next();
-  } else {
-    // const grpReply = await ctx.reply('This command can only be used in private chats.',
-    //   { reply_markup: { remove_keyboard: true }}
-    // );
-    // bot.telegram.deleteMessage(ctx.chat.id, ctx.message.message_id);
-    // setTimeout(() => {
-    //    bot.telegram.deleteMessage(ctx.chat.id, grpReply.message_id);
-    // }, 5000);
   }
 };
 
@@ -86,6 +78,22 @@ bot.help(privateChatCommand, (ctx) => {
 
 // Register Button
 bot.hears('RSVP 🎟', privateChatText, async (ctx) => {
+  
+  // Check if user already exists in the database
+  const existingUser = readFromDatabase(ctx);
+
+  if (existingUser) {
+    // User already exists, show details
+    const userDetails = `<b>• Full Name:</b> ${existingUser.name}\n<b>• Email:</b> ${existingUser.email}\n<b>• No of Tickets:</b> ${existingUser.noOfTickets}`;
+    await ctx.reply(`You are already registered:\n\n<blockquote>📄 <b>Registration Details</b>\n\n${userDetails}</blockquote>\n\nIf you want to update these details, feel free to contact us : @Nimsara`,
+      {
+        parse_mode: "HTML",
+        reply_markup: { remove_keyboard: true }
+      }
+    );
+    return;
+  }
+
   bot.telegram.sendMessage(ctx.message.chat.id, rsvpMsg, {
     parse_mode: "HTML",
     reply_markup: { keyboard: [['🛑 Cancel']], resize_keyboard: true, one_time_keyboard: true }, },)
@@ -95,6 +103,22 @@ bot.hears('RSVP 🎟', privateChatText, async (ctx) => {
 
 // Register Command
 bot.command('register', privateChatCommand, async (ctx) => {
+
+  // Check if user already exists in the database
+  const existingUser = readFromDatabase(ctx);
+
+  if (existingUser) {
+    // User already exists, show details
+    const userDetails = `<b>• Full Name:</b> ${existingUser.name}\n<b>• Email:</b> ${existingUser.email}\n<b>• No of Tickets:</b> ${existingUser.noOfTickets}`;
+    await ctx.reply(`You are already registered:\n\n<blockquote>📄 <b>Registration Details</b>\n\n${userDetails}</blockquote>\n\nIf you want to update these details, feel free to contact us : @Nimsara`,
+      {
+        parse_mode: "HTML",
+        reply_markup: { remove_keyboard: true }
+      }
+    );
+    return;
+  }
+
   bot.telegram.sendMessage(ctx.message.chat.id, rsvpMsg, {
     parse_mode: "HTML",
     reply_markup: { keyboard: [['🛑 Cancel']], resize_keyboard: true, one_time_keyboard: true }, },)
