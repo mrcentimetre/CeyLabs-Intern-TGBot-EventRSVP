@@ -121,20 +121,6 @@ bot.action('confirm_participation', async (ctx) => {
 });
 
 // Easter Eggs Starts
-bot.on('new_chat_members', (ctx) => {
-  const newUser = ctx.message.new_chat_members[0];
-  ctx.telegram.sendMessage(ctx.message.chat.id, `Welcome, ${newUser.first_name}! 🎉 Thank you for joining our cattery group!\n\nImagine you joined with the Tap-Apps Workshop Group. But actually, I like cats . 😌`);
-  
-  setTimeout(() => {
-    
-    if (newUser.username == 'CMNisal' || 'MrCentimetre') {
-      bot.telegram.sendMessage(ctx.message.chat.id, `🤔`)
-      setTimeout(() => {
-      ctx.reply("Ah you are the boss 🤩, I did my best cer. 🫡")
-      }, 2000)
-}}, 3000)
-})
-
 bot.command('grpid', async (ctx) => {
   bot.telegram.sendMessage(ctx.message.chat.id, `Group ID: <code>${ctx.message.chat.id}</code>`,{
     parse_mode: "HTML",
