@@ -10,11 +10,5 @@
     "name": "Jane Doe",
     "email": "jane.doe@example.com",
     "noOfTickets": 3
-  },
-  {
-    "id": 591992584,
-    "name": "Udana Nimsara",
-    "email": "udananimsara@gmail.com",
-    "noOfTickets": "2"
   }
 ]

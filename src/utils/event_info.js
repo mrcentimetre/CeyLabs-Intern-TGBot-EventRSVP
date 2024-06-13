@@ -46,7 +46,7 @@ Please provide your name to proceed with the RSVP. Here are some exciting detail
 - <b>Expert Speakers</b>: Learn from industry experts and Tap Apps enthusiasts.
 - <b>Networking Opportunities</b>: Connect with fellow participants and expand your network.
         
-Just reply with <b><u>YOUR NAME</u></b> to secure your spot!`;
+Just reply with your <b><u>FULL NAME</u></b> to secure your spot!`;
 
 const YouMustBecomeGif = "CgACAgQAAxkBAAIEo2ZotP6TsV1K39qubr5qno0VTEvxAAJeAwACs_8sUJapI1H53mZ9NQQ";
 

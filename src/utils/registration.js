@@ -9,7 +9,21 @@ getName.on('text', async (ctx) => {
       ctx.scene.leave('getName')
       return ctx.reply('You have successfully canceled the registration. To start over, send /register command.',
         { reply_markup: { remove_keyboard: true } }
-      )
+      )}
+    else if (ctx.message.text == 'Help 🆘' || ctx.message.text == 'RSVP 🎟') {
+        ctx.scene.leave('getName');
+        ctx.reply(
+            'Please provide your<b><u> FULL NAME</u></b> to proceed with the RSVP:',
+            {
+                reply_markup: {
+                    keyboard: [['🛑 Cancel']],
+                    resize_keyboard: true,
+                    one_time_keyboard: true
+                },
+                parse_mode: "HTML"
+            }
+        );
+        return ctx.scene.enter('getName');
     }
   
     // Input email message

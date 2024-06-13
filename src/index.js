@@ -5,9 +5,38 @@ const { approveJoinRequest } = require('./utils/group_invitation.js');
 const { writeToDatabase } = require('./utils/database.js');
 const { helpMessage, welcomePhoto, rsvpMsg, welcomeMsg, YouMustBecomeGif, groupLinkMsg } = require('./utils/event_info.js');
 
-
 // Create a bot instance
 const bot = new Telegraf(BOT_TOKEN);
+
+// Middleware to check if the chat is private - in commands
+const privateChatCommand = async (ctx, next) => {
+  if (ctx.chat.type === 'private') {
+    return next();
+  } else {
+    const grpReply = await ctx.reply('This command can only be used in private chats.',
+      { reply_markup: { remove_keyboard: true }}
+    );
+    bot.telegram.deleteMessage(ctx.chat.id, ctx.message.message_id);
+    setTimeout(() => {
+       bot.telegram.deleteMessage(ctx.chat.id, grpReply.message_id);
+    }, 5000);
+  }
+};
+
+// Middleware to check if the chat is private - in commands
+const privateChatText = async (ctx, next) => {
+  if (ctx.chat.type === 'private') {
+    return next();
+  } else {
+    // const grpReply = await ctx.reply('This command can only be used in private chats.',
+    //   { reply_markup: { remove_keyboard: true }}
+    // );
+    // bot.telegram.deleteMessage(ctx.chat.id, ctx.message.message_id);
+    // setTimeout(() => {
+    //    bot.telegram.deleteMessage(ctx.chat.id, grpReply.message_id);
+    // }, 5000);
+  }
+};
 
 // Create a new stage
 const stage = new Scenes.Stage()
@@ -27,7 +56,7 @@ bot.use(async (ctx, next) => {
 })
 
 // Start Command
-bot.start((ctx) =>
+bot.start(privateChatCommand, (ctx) =>
   bot.telegram.sendPhoto(ctx.message.chat.id, welcomePhoto, 
     {
     caption: welcomeMsg(ctx),
@@ -42,7 +71,7 @@ bot.start((ctx) =>
   );
 
 // Help Buton
-bot.hears('Help 🆘', (ctx) => {
+bot.hears('Help 🆘', privateChatText, (ctx) => {
   bot.telegram.sendMessage(ctx.message.chat.id, helpMessage, { 
     parse_mode: "Markdown",
     reply_markup: { remove_keyboard: true } });
@@ -50,13 +79,13 @@ bot.hears('Help 🆘', (ctx) => {
 )
 
 // Help Command
-bot.help((ctx) => {
+bot.help(privateChatCommand, (ctx) => {
     bot.telegram.sendMessage(ctx.message.chat.id, helpMessage, { parse_mode: "Markdown" });
 });
 
 
 // Register Button
-bot.hears('RSVP 🎟', async (ctx) => {
+bot.hears('RSVP 🎟', privateChatText, async (ctx) => {
   bot.telegram.sendMessage(ctx.message.chat.id, rsvpMsg, {
     parse_mode: "HTML",
     reply_markup: { keyboard: [['🛑 Cancel']], resize_keyboard: true, one_time_keyboard: true }, },)
@@ -65,7 +94,7 @@ bot.hears('RSVP 🎟', async (ctx) => {
 )
 
 // Register Command
-bot.command('register', async (ctx) => {
+bot.command('register', privateChatCommand, async (ctx) => {
   bot.telegram.sendMessage(ctx.message.chat.id, rsvpMsg, {
     parse_mode: "HTML",
     reply_markup: { keyboard: [['🛑 Cancel']], resize_keyboard: true, one_time_keyboard: true }, },)
