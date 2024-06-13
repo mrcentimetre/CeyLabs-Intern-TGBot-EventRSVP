@@ -1,90 +1,99 @@
-### Internship Task: Event Ticketing Bot for Telegram
+# Taps-App Workshop Event Ticketing Telegram Bot
 
-#### Objective
-Develop a Telegram bot for event ticketing that allows users to obtain free tickets and adds them to a single Telegram group dedicated to the event.
 
-#### Task Description
-Your task is to create a Telegram bot using either PHP, Node.js, or Python that handles the following functionalities:
-1. **Event Information:** Provides users with details about the event.
-2. **Ticket Request:** Allows users to request free tickets through the bot.
-3. **User Registration:** Collects necessary user information during the ticket request.
-4. **Group Invitation:** Adds users to a specific Telegram group upon successful ticket request.
+![Taps-App Workshop Event Information Image](https://i.imgur.com/qt8Sjsb.png "Taps-App Workshop Event Information Image")
 
-#### Requirements
-- **Bot Commands:**
-  - `/start` - Greets the user and provides event details.
-  - `/register` - Initiates the ticket registration process.
-  - `/help` - Provides help and usage instructions.
 
-- **Ticket Request Process:**
-  - Collect user's name, email, and number of tickets.
-  - Confirm the request and send a ticket (can be a simple confirmation message with a unique ID).
+## Table of Contents
 
-- **Group Management:**
-  - After successful ticket request, automatically add the user to the designated Telegram group.
-  - Ensure the bot has the necessary permissions to add users to the group.
+- [Introduction](#introduction)
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Configuration](#configuration)
+- [Database](#database)
+- [Contributing](#contributing)
+- [License](#license)
 
-- **Database:**
-  - Maintain a simple database (e.g., JSON, SQLite) to store user information and ticket details.
+## Introduction
 
-#### Submission Guidelines
-- **Fork Repository:** To accept this task, fork the GitHub repository [EventRSVPBot]([https://github.com/CeyLabs-TGBot-EventRSVPBot](https://github.com/CeyLabs/CeyLabs-Intern-TGBot-EventRSVP/)) which contains the hello bot as a starting point.
-- **GitHub Repository:** Ensure your forked repository contains:
-  - Source code for the Telegram bot.
-  - A README file with instructions on how to set up and run the bot.
-  - Any necessary configuration files (e.g., `config.json` for bot tokens and group IDs).
-  - Documented code for clarity and maintainability.
+Taps-App Workshop Event Ticketing Telegram Bot is a Telegram bot designed to handle event RSVPs. It allows users to register for events, join groups, and receive event-related information.
 
-- **Telegram Group:** Add a section in the README with details on how to join the Telegram group you created for testing.
+## Features
 
-- **Reference:** You may refer to the [Hello Bot sample](https://core.telegram.org/bots/samples/hellobot) for initial guidance and also seek help from the [BotHouse Telegram Group](https://t.me/BotHouse).
+- User registration for events
+- Group invitation management
+- Event information retrieval
 
-#### Evaluation Criteria
-- Functionality: Does the bot meet all the requirements and handle the ticket request and group management as specified?
-- Code Quality: Is the code clean, well-documented, and organized?
-- User Experience: Is the bot easy to interact with, and does it provide a seamless user experience?
-- Creativity: Any additional features or enhancements beyond the basic requirements will be appreciated.
+## Installation
 
-#### Preferred Languages
-- PHP
-- Node.js
-- Python
+To install and run this bot locally, follow these steps:
 
-#### Deadline
-Please check the Deadline mentioned in the Email you recieved.
+1. Clone the repository:
 
-**Good luck!** If you have any questions, feel free to reach out.
+    ```sh
+    git clone https://github.com/yourusername/CEYLABS-INTERN-TGBOT-EVENTRSVP.git
+    ```
 
----
+2. Navigate to the project directory:
 
-### Suggested Folder Structure
+    ```sh
+    cd CEYLABS-INTERN-TGBOT-EVENTRSVP
+    ```
 
-Here is a suggested folder structure for your project in PHP:
+3. Install the dependencies:
 
-```
-CeyLabs-TGBot-EventRSVPBot/
-│
-├── src/
-│   ├── main.php
-│   ├── config.json
-│   ├── database.json
-│   └── utils/
-│       ├── event_info.php
-│       ├── registration.php
-│       ├── group_invitation.php
-│       └── database.php
-│
-├── tests/
-│   └── test_main.php
-│
-├── README.md
-├── .gitignore
-└── composer.json
+    ```sh
+    npm install
+    ```
+
+4. Update a `src/config.js` file, add your Telegram bot token and event group ID:
+
+    ```js
+    module.exports = {
+    BOT_TOKEN: 'Your Bot Token Here', // bot`s token. You can get that in @BotFather
+    GROUP_ID: 'Your Group ID Here' // // Group ID of the event group. You can get it using the /grpid command after adding the bot to the group.
+    }
+
+## Usage
+
+To start the bot, run the following command:
+
+```sh
+npm test
 ```
 
-- `src/` contains the main application code.
-- `utils/` contains utility scripts for handling specific functionalities like event info, ticket requests, group invitations, and database operations.
-- `tests/` contains test scripts for your bot.
-- `README.md` contains detailed instructions on setting up and running the bot.
-- `.gitignore` specifies files and directories to be ignored by Git.
-- `composer.json` lists dependencies for PHP.
+## Configuration
+
+The configuration settings are located in the ```src/config.js``` file. Adjust the settings according to your requirements.
+
+## Database
+User registration details are stored in the ```src/database.json``` file. The information stored includes the user's name, email, and the number of tickets they registered for.
+
+### Structure of database.json
+The ```database.json``` file contains user data in the following format:
+
+```json
+{
+  "users": [
+    {
+      "name": "John Doe",
+      "email": "john.doe@example.com",
+      "noOfTickets": 2
+    },
+    {
+      "name": "Jane Smith",
+      "email": "jane.smith@example.com",
+      "noOfTickets": 1
+    }
+  ]
+}
+```
+
+## Contributing
+
+We welcome contributions! Please fork the repository and submit a pull request for any improvements or bug fixes.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
