@@ -179,6 +179,15 @@ bot.command('grpid', async (ctx) => {
     parse_mode: "HTML",
   })
 })
+
+bot.on('new_chat_members', async (ctx) => {
+  const newUser = ctx.message.new_chat_members[0];
+  const welcome = await ctx.telegram.sendMessage(ctx.message.chat.id, `Welcome, ${newUser.username}! 🎉 Thank you for joining our group!`);
+  setTimeout(() => {
+    bot.telegram.deleteMessage(ctx.chat.id, welcome.message_id);
+ }, 10000);
+})
+
 // Easter Eggs Ends
 
   bot.launch();
