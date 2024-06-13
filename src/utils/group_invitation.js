@@ -3,6 +3,7 @@ const { GROUP_ID } = require('../config.js');
 // Function to approve a chat join request
 const approveJoinRequest = async (bot, ctx, userId) => {
     const chatId = GROUP_ID;
+    
     try {
       await bot.telegram.approveChatJoinRequest(chatId, userId);
         bot.telegram.sendSticker(ctx.chat.id, 'CAACAgEAAxkBAAIFg2Zov_yyPaE_qE-5b-LYL7jZa_dOAALKAQACCafZRl5-64cebkGpNQQ')
@@ -18,6 +19,7 @@ const approveJoinRequest = async (bot, ctx, userId) => {
     } catch (error) {
       console.error(`Failed to approve join request for user ${userId}:`, error);
   
+      setTimeout(() => {
       if (error.response.description === 'Bad Request: USER_ALREADY_PARTICIPANT') {
         bot.telegram.answerCbQuery(ctx.callbackQuery.id, `We can't process your join request because you're already a member of the group.`, 
           {
@@ -33,6 +35,7 @@ const approveJoinRequest = async (bot, ctx, userId) => {
       } else {
         ctx.reply(`Failed to approve join request. Please try again.`);
       }
+    }, 2000);
     }
   };
   
