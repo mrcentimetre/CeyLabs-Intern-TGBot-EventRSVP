@@ -47,7 +47,7 @@ To install and run this bot locally, follow these steps:
     npm install
     ```
 
-4. Update a `src/config.js` file, add your Telegram bot token and event group ID:
+4. Update the `src/config.sample.js` file with your Telegram bot token and event group ID, then rename it as `config.js`:
 
     ```js
     module.exports = {
@@ -63,9 +63,22 @@ To start the bot, run the following command:
 npm test
 ```
 
-## Configuration
+### Configuration
 
-The configuration settings are located in the ```src/config.js``` file. Adjust the settings according to your requirements.
+1. Update the `src/config.sample.js` file with your Telegram bot token and event group ID.
+2. Rename the updated `config.sample.js` file to `config.js`.
+
+Here is what the `config.sample.js` file looks like:
+
+```javascript
+module.exports = {
+    BOT_TOKEN: 'Your Bot Token Here', // bot's token. You can get that from @BotFather
+    GROUP_ID: 'Your Group ID Here'    // Group ID of the event group. You can get it using the /grpid command after adding the bot to the group.
+};
+
+After renaming, your `config.js` file should not be tracked by git, so it will not be pushed to the repository with your sensitive data.
+
+// Please rename this file to config.js after you have filled in the values.
 
 ## Database
 User registration details are stored in the ```src/database.json``` file. The information stored includes the user's name, email, and the number of tickets they registered for.
