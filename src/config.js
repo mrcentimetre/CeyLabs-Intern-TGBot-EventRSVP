@@ -1,4 +1,4 @@
 module.exports = {
-    BOT_TOKEN: '7151144835:AAFxECx8r8h67nbQ6nCH-4PqnKE_ez6b940', // bot`s token. You can get that in @BotFather
-    GROUP_ID: '-1002210661618' // admin`s telegram ids
+    BOT_TOKEN: '', // bot`s token. You can get that in @BotFather
+    GROUP_ID: '' // // Group ID of the event group. You can get it using the /grpid command after adding the bot to the group.
   }
