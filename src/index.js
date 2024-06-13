@@ -185,7 +185,7 @@ bot.on('new_chat_members', async (ctx) => {
   const welcome = await ctx.telegram.sendMessage(ctx.message.chat.id, `Welcome, ${newUser.username}! 🎉 Thank you for joining our group!`);
   setTimeout(() => {
     bot.telegram.deleteMessage(ctx.chat.id, welcome.message_id);
- }, 10000);
+ }, 60000);
 })
 
 // Easter Eggs Ends
